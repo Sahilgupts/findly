@@ -1,0 +1,49 @@
+<section class="page-title">
+    <p class="eyebrow">Community board</p>
+    <h1>Find what’s been found.</h1>
+    <p>Search the latest reports from your community.</p>
+</section>
+<form class="filters" method="GET"><input name="q" value="<%= filters.q %>"
+        placeholder="Search items, descriptions…"><select name="type">
+        <option value="">Lost & found</option>
+        <option value="lost" <%=filters.type==='lost' ?'selected':'' %>>Lost</option>
+        <option value="found" <%=filters.type==='found' ?'selected':'' %>>Found</option>
+    </select><select name="category">
+        <option value="">All categories</option>
+        <% categories.forEach(c=>{%><option <%=filters.category===c?'selected':'' %>><%= c %>
+            </option>
+            <%})%>
+    </select><input name="location" value="<%= filters.location %>" placeholder="Location"><button
+        class="button">Search</button></form>
+<p class="result-count">
+    <%= items.length %> listing<%= items.length===1?'':'s' %> found
+</p>
+<section class="grid listings">
+    <% items.forEach(item=>{ %><article class="item-card"><a class="item-image" href="/items/<%= item._id %>">
+                <% if(item.image){%><img src="<%= item.image %>" alt="<%= item.title %>">
+                    <%}else{%><span>
+                            <%= item.category==='Keys' ?'🔑':item.category==='Electronics' ?'📱':'◌' %>
+                        </span>
+                        <%}%>
+            </a>
+            <div class="item-body">
+                <div><span class="tag <%= item.type %>">
+                        <%= item.type %>
+                    </span><span class="date">
+                        <%= new Date(item.date).toLocaleDateString() %>
+                    </span></div>
+                <h3><a href="/items/<%= item._id %>">
+                        <%= item.title %>
+                    </a></h3>
+                <p>⌖ <%= item.location %>
+                </p>
+            </div>
+        </article>
+        <%})%>
+</section>
+<%if(!items.length){%>
+    <div class="empty">
+        <h2>Nothing matched that search.</h2>
+        <p>Try a different phrase, category, or location.</p><a class="button" href="/items">Clear filters</a>
+    </div>
+    <%}%>

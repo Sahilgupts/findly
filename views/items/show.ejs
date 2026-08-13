@@ -1,0 +1,63 @@
+<section class="detail">
+    <div class="detail-image">
+        <%if(item.image){%><img src="<%=item.image%>" alt="<%=item.title%>">
+            <%}else{%><span>
+                    <%=item.category==='Keys'?'🔑':item.category==='Electronics'?'📱':'◌'%>
+                </span>
+                <%}%>
+    </div>
+    <div class="detail-content"><a class="back" href="/items">← Back to listings</a>
+        <div class="detail-meta"><span class="tag <%=item.type%>">
+                <%=item.type%>
+            </span><span class="status <%=item.status%>">
+                <%=item.status%>
+            </span></div>
+        <h1>
+            <%=item.title%>
+        </h1>
+        <p class="location">⌖ <%=item.location%> <span>·</span>
+                <%=new Date(item.date).toLocaleDateString(undefined,{month:'long',day:'numeric',year:'numeric'})%>
+        </p>
+        <p class="description">
+            <%=item.description%>
+        </p>
+        <div class="reporter">Reported by <b>
+                <%=item.owner.name%>
+            </b> · <%=new Date(item.createdAt).toLocaleDateString()%>
+        </div>
+        <%if(currentUser && String(item.owner._id)===currentUser._id){%><a class="button"
+                href="/items/<%=item._id%>/edit">Edit listing</a>
+            <%}else if(currentUser && item.status==='open' ){%><button class="button" data-modal="claim-modal">This
+                    might be mine →</button>
+                <%}else if(!currentUser){%><a class="button" href="/login">Sign in to claim →</a>
+                    <%}%>
+    </div>
+</section>
+<%if(claims.length){%>
+    <section class="claims">
+        <h2>Claims received</h2>
+        <%claims.forEach(claim=>{%><article><b>
+                    <%=claim.claimant.name%>
+                </b><span class="status <%=claim.status%>">
+                    <%=claim.status%>
+                </span>
+                <p>
+                    <%=claim.message%>
+                </p><small>
+                    <%=claim.proof%>
+                </small>
+            </article>
+            <%})%>
+    </section>
+    <%}%>
+        <div class="modal" id="claim-modal">
+            <div class="modal-card"><button class="close" data-close>×</button>
+                <p class="eyebrow">Verify ownership</p>
+                <h2>Tell the reporter why it’s yours.</h2>
+                <form method="POST" action="/items/<%=item._id%>/claims"><label>Message<textarea required name="message"
+                            rows="4"
+                            placeholder="Describe identifying details only the owner would know."></textarea></label><label>Optional
+                        proof<input name="proof" placeholder="Receipt, serial number, etc."></label><button
+                        class="button wide">Submit claim</button></form>
+            </div>
+        </div>
