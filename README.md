@@ -21,7 +21,7 @@ Findly is a web-based application that helps people report, search, and recover 
 - Database Management
 - Responsive User Interface
 
-## Technologies Used
+## 🛠️ Technologies Used
 
 Frontend: HTML, CSS, JavaScript
 Templating Engine: EJS
@@ -33,7 +33,7 @@ Authentication: Login and Registration system
 Development Environment: Visual Studio Code
 Version Control: Git and GitHub
 
-## Project Structure
+## 📂 Project Structure
 
 public/ – CSS, JavaScript, and uploaded files
 views/ – EJS templates for website pages
